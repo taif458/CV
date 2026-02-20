@@ -89,9 +89,33 @@
           <ul>
             <li>Developed a classic game using C# in Visual Studio.</li>
             <li>Applied Object-Oriented Programming (OOP) and collision detection logic.</li>
-            <li><a href="pingpong.html">Play the web version</a></li>
+            <li>Playable directly below (mobile and laptop compatible).</li>
           </ul>
         </article>
+      </div>
+    </section>
+
+    <section class="section" id="game">
+      <h3>Interactive Ping Pong Simulator</h3>
+      <div class="game-embed card">
+        <section class="game-scoreboard" aria-label="Score">
+          <div>
+            <p class="game-label">Player</p>
+            <p id="leftScore" class="game-score">0</p>
+          </div>
+          <div>
+            <p class="game-label">CPU</p>
+            <p id="rightScore" class="game-score">0</p>
+          </div>
+        </section>
+
+        <canvas id="gameCanvas" width="900" height="500" aria-label="Ping Pong Game"></canvas>
+
+        <section class="game-controls">
+          <button id="toggleGameBtn" class="btn btn-primary" type="button">Start / Pause</button>
+          <button id="resetGameBtn" class="btn btn-ghost" type="button">Reset</button>
+          <p><strong>Controls:</strong> W/S or Arrow Up/Down | Drag on canvas (mobile) | Space start/pause | R reset</p>
+        </section>
       </div>
     </section>
 
@@ -143,9 +167,6 @@
       | <a href="tel:+966549388833">+966549388833</a>
     </p>
   </footer>
-  <section>
-  <h2>Interactive Ping Pong Simulator</h2>
-  <iframe src="pingpong.html" width="800" height="500" style="border:none;"></iframe>
-</section>
+  <script src="pingpong.js"></script>
 </body>
 </html>
