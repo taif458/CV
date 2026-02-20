@@ -1,0 +1,79 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #f6fbff;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(0, 184, 255, 0.25), transparent 35%),
+    radial-gradient(circle at 85% 90%, rgba(0, 255, 170, 0.2), transparent 35%),
+    #051019;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.game-shell {
+  width: min(980px, 100%);
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.game-header h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+}
+
+.back-link {
+  color: #8be7ff;
+}
+
+.scoreboard {
+  display: flex;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.label {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.score {
+  margin: 0.2rem 0 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+canvas {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #08131d;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.controls {
+  margin-top: 0.7rem;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.controls p {
+  margin: 0;
+}

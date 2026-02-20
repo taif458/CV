@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ping Pong | Web Version</title>
+  <link rel="stylesheet" href="pingpong.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <header class="game-header">
+      <h1>Ping Pong</h1>
+      <a class="back-link" href="index.html">Back to CV</a>
+    </header>
+
+    <section class="scoreboard" aria-label="Score">
+      <div>
+        <p class="label">Player</p>
+        <p id="leftScore" class="score">0</p>
+      </div>
+      <div>
+        <p class="label">CPU</p>
+        <p id="rightScore" class="score">0</p>
+      </div>
+    </section>
+
+    <canvas id="gameCanvas" width="900" height="500" aria-label="Ping Pong Game"></canvas>
+
+    <section class="controls">
+      <p><strong>Controls:</strong> W/S or Arrow Up/Down to move | Space to start/pause | R to reset</p>
+    </section>
+  </main>
+
+  <script src="pingpong.js"></script>
+</body>
+</html>
