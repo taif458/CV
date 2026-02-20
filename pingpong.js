@@ -40,9 +40,16 @@ const keys = {
   up: false,
   down: false,
 };
+let touchActive = false;
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
+}
+
+function updatePlayerFromClientY(clientY) {
+  const rect = canvas.getBoundingClientRect();
+  const scaledY = ((clientY - rect.top) * canvas.height) / rect.height;
+  leftPaddle.y = clamp(scaledY - paddle.height / 2, 0, canvas.height - paddle.height);
 }
 
 function resetBall(direction = 1) {
@@ -95,6 +102,7 @@ function drawOverlay(text, subtext) {
 }
 
 function movePlayer() {
+  if (touchActive) return;
   if (keys.up) leftPaddle.y -= paddle.speed;
   if (keys.down) leftPaddle.y += paddle.speed;
   leftPaddle.y = clamp(leftPaddle.y, 0, canvas.height - paddle.height);
@@ -205,6 +213,29 @@ window.addEventListener("keyup", (e) => {
   const key = e.key.toLowerCase();
   if (key === "arrowup" || key === "w") keys.up = false;
   if (key === "arrowdown" || key === "s") keys.down = false;
+});
+
+canvas.style.touchAction = "none";
+
+canvas.addEventListener("touchstart", (e) => {
+  if (e.touches.length === 0) return;
+  e.preventDefault();
+  touchActive = true;
+  updatePlayerFromClientY(e.touches[0].clientY);
+});
+
+canvas.addEventListener("touchmove", (e) => {
+  if (!touchActive || e.touches.length === 0) return;
+  e.preventDefault();
+  updatePlayerFromClientY(e.touches[0].clientY);
+});
+
+canvas.addEventListener("touchend", () => {
+  touchActive = false;
+});
+
+canvas.addEventListener("touchcancel", () => {
+  touchActive = false;
 });
 
 resetGame();
