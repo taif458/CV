@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staff Login | Lost &amp; Found Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='lost_found.css') }}" />
+</head>
+<body>
+  <main class="auth-shell">
+    <section class="auth-card">
+      <p class="eyebrow">Staff Workflow</p>
+      <h1>Admin Login</h1>
+      <p>Authorized airport employees only.</p>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <section class="flash-stack" aria-live="polite">
+            {% for category, message in messages %}
+              <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          </section>
+        {% endif %}
+      {% endwith %}
+
+      <form method="post" class="auth-form">
+        <label>
+          Password
+          <input type="password" name="password" required />
+        </label>
+        <button class="primary-btn" type="submit">Sign In</button>
+      </form>
+      <a class="admin-link" href="{{ url_for('home') }}">Back to Platform</a>
+    </section>
+  </main>
+</body>
+</html>

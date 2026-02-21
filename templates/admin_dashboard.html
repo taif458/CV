@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | Lost &amp; Found Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='lost_found.css') }}" />
+</head>
+<body>
+  <main class="platform-shell admin-shell">
+    <header class="platform-hero">
+      <div>
+        <p class="eyebrow">Airport Staff Console</p>
+        <h1>Workflow &amp; Analytics</h1>
+        <p class="hero-copy">Manage report lifecycle updates and finalize claim handovers.</p>
+      </div>
+      <div class="admin-actions">
+        <a class="admin-link" href="{{ url_for('home') }}">Public Platform</a>
+        <a class="admin-link" href="{{ url_for('admin_logout') }}">Logout</a>
+      </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <section class="flash-stack" aria-live="polite">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </section>
+      {% endif %}
+    {% endwith %}
+
+    <section class="metrics-grid">
+      <article class="metric-card">
+        <p>Total Reports</p>
+        <h3>{{ metrics.total }}</h3>
+      </article>
+      <article class="metric-card">
+        <p>Items Found</p>
+        <h3>{{ metrics.found }}</h3>
+      </article>
+      <article class="metric-card">
+        <p>Ready for Pickup</p>
+        <h3>{{ metrics.ready }}</h3>
+      </article>
+      <article class="metric-card">
+        <p>Claimed Items</p>
+        <h3>{{ metrics.claimed }}</h3>
+      </article>
+    </section>
+
+    <section class="module-card">
+      <h2>Report Operations Table</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tracking ID</th>
+              <th>Passenger</th>
+              <th>Item</th>
+              <th>Description</th>
+              <th>Pipeline</th>
+              <th>Update Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in reports %}
+              {% set step = pipeline_step(row) %}
+              <tr>
+                <td>{{ row.tracking_id }}</td>
+                <td>{{ row.passenger_name }}</td>
+                <td>{{ row.item_name }}</td>
+                <td>{{ row.description }}</td>
+                <td>
+                  <ol class="pipeline compact">
+                    <li class="{% if step >= 1 %}done{% endif %}">Reported</li>
+                    <li class="{% if step >= 2 %}done{% endif %}">Found</li>
+                    <li class="{% if step >= 3 %}done{% endif %}">Ready</li>
+                    <li class="{% if step >= 4 %}done{% endif %}">Claimed</li>
+                  </ol>
+                </td>
+                <td>
+                  <form method="post" action="{{ url_for('admin_update', tracking_id=row.tracking_id) }}" class="status-form">
+                    <label>
+                      Found
+                      <select name="found_status">
+                        <option value="0" {% if not row.found_status %}selected{% endif %}>No</option>
+                        <option value="1" {% if row.found_status %}selected{% endif %}>Yes</option>
+                      </select>
+                    </label>
+                    <label>
+                      Claimed
+                      <select name="claim_status">
+                        <option value="0" {% if not row.claim_status %}selected{% endif %}>No</option>
+                        <option value="1" {% if row.claim_status %}selected{% endif %}>Yes</option>
+                      </select>
+                    </label>
+                    <button class="primary-btn small" type="submit">Save</button>
+                  </form>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="6">No reports available.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
