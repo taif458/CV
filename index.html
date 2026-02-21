@@ -46,7 +46,7 @@
         <p>B.S. in Software Engineering</p>
       </article>
       <article>
-        <h2>2</h2>
+        <h2>3</h2>
         <p>Featured Projects</p>
       </article>
       <article>
@@ -75,21 +75,57 @@
 
     <section class="section" id="projects">
       <h3>Projects</h3>
-      <div class="cards">
-        <article class="card">
-          <h4>Lost &amp; Found Items System</h4>
-          <ul>
-            <li>Developed a web-based system for airport passengers to report and track lost items.</li>
-            <li>Implemented a database architecture with unique ID tracking.</li>
-            <li>Designed a dashboard for staff to manage item statuses (Found/Claimed).</li>
+      <div class="cards project-grid">
+        <article class="card project-card discover">
+          <p class="project-kicker">Airport Operations Platform</p>
+          <h4 class="project-title">Lost &amp; Found Items System</h4>
+          <p class="project-copy">
+            Web application for airport passengers and staff to report, classify, and track missing items with searchable IDs and status pipelines.
+          </p>
+          <div class="lost-media-grid" aria-label="Lost and Found UI previews">
+            <div class="media-tile media-tile-tall">Passenger Report Form</div>
+            <div class="media-tile">Claim Verification</div>
+            <div class="media-tile">Tracking Dashboard</div>
+            <div class="media-tile media-tile-wide">Staff Workflow and Analytics</div>
+          </div>
+          <ul class="project-points">
+            <li>Built structured database records with unique ID lifecycle tracking.</li>
+            <li>Designed a clean staff dashboard for Found, Pending, and Claimed states.</li>
+            <li>Focused on faster handoff between operations desk and passenger support.</li>
           </ul>
         </article>
-        <article class="card">
-          <h4>Ping Pong Game</h4>
-          <ul>
-            <li>Developed a classic game using C# in Visual Studio.</li>
-            <li>Applied Object-Oriented Programming (OOP) and collision detection logic.</li>
-            <li>Playable directly below (mobile and laptop compatible).</li>
+
+        <article class="card project-card discover">
+          <p class="project-kicker">Systems Design and Simulation</p>
+          <h4 class="project-title">Elevator Control System</h4>
+          <p class="project-copy">
+            Event-driven elevator scheduler that manages hall calls and cabin requests while optimizing travel direction, wait time, and floor servicing order.
+          </p>
+          <div class="elevator-visual" aria-hidden="true">
+            <div class="shaft"></div>
+            <div class="elevator-car"></div>
+            <div class="floor floor-1"></div>
+            <div class="floor floor-2"></div>
+            <div class="floor floor-3"></div>
+            <div class="floor floor-4"></div>
+          </div>
+          <ul class="project-points">
+            <li>Modeled queue prioritization for up and down requests.</li>
+            <li>Implemented safe state transitions between moving, opening, and idle states.</li>
+            <li>Validated behavior with scenario-based test cases.</li>
+          </ul>
+        </article>
+
+        <article class="card project-card discover">
+          <p class="project-kicker">Interactive Web Game</p>
+          <h4 class="project-title">Ping Pong Game</h4>
+          <p class="project-copy">
+            Responsive browser game featuring keyboard and touch controls, collision physics, and adaptive canvas scaling for mobile and laptop play.
+          </p>
+          <ul class="project-points">
+            <li>Developed gameplay logic with paddle AI and dynamic ball reactions.</li>
+            <li>Applied object-oriented structure and collision detection patterns.</li>
+            <li>Playable directly below with responsive controls.</li>
           </ul>
         </article>
       </div>

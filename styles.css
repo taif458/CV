@@ -6,6 +6,9 @@
   --accent: #d14f33;
   --accent-2: #0f6b5b;
   --ring: rgba(20, 18, 15, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.46);
+  --glass-border: rgba(255, 255, 255, 0.54);
+  --glass-shadow: 0 18px 42px rgba(20, 18, 15, 0.14);
 }
 
 * {
@@ -216,6 +219,159 @@ h1 {
   line-height: 1.6;
 }
 
+.project-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.project-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.62), var(--glass-bg));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 280ms ease, box-shadow 280ms ease, border-color 280ms ease;
+}
+
+.project-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px 200px at -10% -30%, rgba(255, 255, 255, 0.55), transparent 70%);
+  pointer-events: none;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 50px rgba(20, 18, 15, 0.18);
+  border-color: rgba(255, 255, 255, 0.72);
+}
+
+.project-kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-2);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.project-title {
+  margin: 0.35rem 0 0.55rem;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.3rem;
+}
+
+.project-copy {
+  margin: 0 0 0.9rem;
+  color: #3f3b35;
+  line-height: 1.7;
+  font-size: 0.98rem;
+}
+
+.project-points {
+  margin-top: 0.85rem;
+}
+
+.lost-media-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.media-tile {
+  min-height: 78px;
+  border-radius: 12px;
+  border: 1px solid rgba(20, 18, 15, 0.12);
+  background:
+    linear-gradient(145deg, rgba(15, 107, 91, 0.14), rgba(209, 79, 51, 0.08)),
+    rgba(255, 255, 255, 0.66);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 0.55rem;
+  color: #22201b;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.35;
+  transition: transform 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+.media-tile:hover {
+  transform: translateY(-3px) scale(1.01);
+  border-color: rgba(15, 107, 91, 0.4);
+}
+
+.media-tile-tall {
+  grid-row: span 2;
+}
+
+.media-tile-wide {
+  grid-column: span 2;
+}
+
+.elevator-visual {
+  position: relative;
+  height: 210px;
+  margin: 0.35rem 0 0.9rem;
+  border-radius: 14px;
+  border: 1px solid rgba(20, 18, 15, 0.12);
+  background:
+    linear-gradient(180deg, rgba(15, 107, 91, 0.1), rgba(15, 107, 91, 0.03)),
+    rgba(255, 255, 255, 0.58);
+  overflow: hidden;
+}
+
+.shaft {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 50%;
+  width: 66px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(20, 18, 15, 0.25);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(44, 62, 80, 0.18), rgba(44, 62, 80, 0.08));
+}
+
+.elevator-car {
+  position: absolute;
+  left: 50%;
+  width: 50px;
+  height: 42px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #2c3e50, #50657a);
+  border-radius: 10px;
+  box-shadow: 0 10px 18px rgba(20, 18, 15, 0.24);
+  animation: elevatorTravel 4.6s ease-in-out infinite alternate;
+}
+
+.floor {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  height: 2px;
+  background: rgba(20, 18, 15, 0.18);
+}
+
+.floor-1 { bottom: 20px; }
+.floor-2 { bottom: 66px; }
+.floor-3 { bottom: 112px; }
+.floor-4 { bottom: 158px; }
+
+.discover {
+  opacity: 0.9;
+  transition: opacity 220ms ease, transform 220ms ease, filter 220ms ease;
+  filter: saturate(0.92);
+}
+
+.discover:hover {
+  opacity: 1;
+  transform: translateY(-4px);
+  filter: saturate(1.05);
+}
+
 .single {
   max-width: 100%;
 }
@@ -307,9 +463,22 @@ h1 {
   }
 }
 
+@keyframes elevatorTravel {
+  from {
+    top: 154px;
+  }
+  to {
+    top: 22px;
+  }
+}
+
 @media (max-width: 900px) {
   .cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -336,5 +505,15 @@ h1 {
 
   .game-scoreboard {
     padding: 0.7rem 0.8rem;
+  }
+
+  .lost-media-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .media-tile-tall,
+  .media-tile-wide {
+    grid-row: auto;
+    grid-column: auto;
   }
 }
