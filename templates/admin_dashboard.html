@@ -6,12 +6,12 @@
   <title>Admin Dashboard | Lost &amp; Found Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='lost_found.css') }}" />
 </head>
 <body>
-  <main class="platform-shell admin-shell">
-    <header class="platform-hero">
+  <main class="app-shell admin-shell">
+    <header class="hero">
       <div>
         <p class="eyebrow">Airport Staff Console</p>
         <h1>Workflow &amp; Analytics</h1>
@@ -43,8 +43,8 @@
         <h3>{{ metrics.found }}</h3>
       </article>
       <article class="metric-card">
-        <p>Ready for Pickup</p>
-        <h3>{{ metrics.ready }}</h3>
+        <p>Open Cases</p>
+        <h3>{{ metrics.open_cases }}</h3>
       </article>
       <article class="metric-card">
         <p>Claimed Items</p>
@@ -78,8 +78,7 @@
                   <ol class="pipeline compact">
                     <li class="{% if step >= 1 %}done{% endif %}">Reported</li>
                     <li class="{% if step >= 2 %}done{% endif %}">Found</li>
-                    <li class="{% if step >= 3 %}done{% endif %}">Ready</li>
-                    <li class="{% if step >= 4 %}done{% endif %}">Claimed</li>
+                    <li class="{% if step >= 3 %}done{% endif %}">Claimed</li>
                   </ol>
                 </td>
                 <td>

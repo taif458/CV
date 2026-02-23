@@ -1,27 +1,33 @@
-const tabs = Array.from(document.querySelectorAll(".module-tab"));
-const panels = Array.from(document.querySelectorAll(".module-panel"));
-const container = document.querySelector(".module-panels");
+const modal = document.getElementById("reportModal");
+const openButton = document.getElementById("openReportModal");
+const closeButton = document.getElementById("closeReportModal");
 
-if (tabs.length > 0 && panels.length > 0 && container) {
-  const activate = (target) => {
-    tabs.forEach((tab) => {
-      tab.classList.toggle("active", tab.dataset.target === target);
-    });
+const openModal = () => {
+  if (!modal) return;
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+};
 
-    panels.forEach((panel) => {
-      const isActive = panel.id === `panel-${target}`;
-      panel.classList.toggle("active", isActive);
-    });
+const closeModal = () => {
+  if (!modal) return;
+  modal.classList.remove("open");
+  modal.setAttribute("aria-hidden", "true");
+};
 
-    container.dataset.active = target;
-  };
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      activate(tab.dataset.target);
-    });
-  });
-
-  const current = container.dataset.active || "report";
-  activate(current);
+if (openButton) {
+  openButton.addEventListener("click", openModal);
 }
+
+if (closeButton) {
+  closeButton.addEventListener("click", closeModal);
+}
+
+if (modal) {
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) closeModal();
+  });
+}
+
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeModal();
+});

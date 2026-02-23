@@ -49,11 +49,11 @@ def fetch_metrics():
         total = conn.execute("SELECT COUNT(*) AS count FROM reports").fetchone()["count"]
         found = conn.execute("SELECT COUNT(*) AS count FROM reports WHERE found_status = 1").fetchone()["count"]
         claimed = conn.execute("SELECT COUNT(*) AS count FROM reports WHERE claim_status = 1").fetchone()["count"]
-    ready = max(found - claimed, 0)
+    open_cases = max(total - claimed, 0)
     return {
         "total": total,
         "found": found,
-        "ready": ready,
+        "open_cases": open_cases,
         "claimed": claimed,
     }
 
@@ -86,9 +86,9 @@ def fetch_all_reports():
 
 def get_pipeline_step(report):
     if report["claim_status"]:
-        return 4
-    if report["found_status"]:
         return 3
+    if report["found_status"]:
+        return 2
     return 1
 
 
@@ -102,7 +102,6 @@ def home():
     init_db()
     search_result = None
     latest_tracking_id = None
-    active_panel = request.args.get("panel", "report")
 
     if request.method == "POST":
         action = request.form.get("action", "")
@@ -114,7 +113,6 @@ def home():
 
             if not passenger_name or not item_name or not description:
                 flash("Please complete all report fields.", "error")
-                active_panel = "report"
             else:
                 tracking_id = generate_tracking_id()
                 created_at = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
@@ -130,11 +128,9 @@ def home():
                     )
                 latest_tracking_id = tracking_id
                 flash("Report submitted successfully.", "success")
-                active_panel = "report"
 
         elif action == "track":
             tracking_id = request.form.get("tracking_id", "").strip().upper()
-            active_panel = "verification"
             if not tracking_id:
                 flash("Enter a Tracking ID to search.", "error")
             else:
@@ -154,8 +150,7 @@ def home():
     recent_reports = fetch_recent_reports()
 
     return render_template(
-        "lost_found.html",
-        active_panel=active_panel,
+        "index.html",
         search_result=search_result,
         latest_tracking_id=latest_tracking_id,
         metrics=metrics,
