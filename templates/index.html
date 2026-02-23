@@ -1,141 +1,101 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Airport Operations | Lost &amp; Found</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='lost_found.css') }}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام المفقودات | Airport Operations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --primary: #2563eb;
+            --text: #1e293b;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            text-align: center;
+        }
+        .header { margin-bottom: 40px; }
+        .header h1 { font-size: 2.5rem; color: var(--primary); margin-bottom: 10px; }
+        
+        /* نظام الكروت (Bento Grid) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        .card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .card h3 { margin: 10px 0; font-size: 1.5rem; }
+        .card p { color: #64748b; font-size: 0.9rem; line-height: 1.6; }
+        
+        .footer { margin-top: 50px; font-size: 0.8rem; color: #94a3b8; }
+    </style>
 </head>
 <body>
-  <main class="app-shell">
-    <header class="hero">
-      <div>
-        <p class="eyebrow">Airport Operations Platform</p>
-        <h1>Lost &amp; Found Control Hub</h1>
-        <p class="hero-copy">A premium workflow for passengers and staff to report, verify, and close item recovery cases.</p>
-      </div>
-      <a class="staff-link" href="{{ url_for('admin_login') }}">Staff Login</a>
-    </header>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <section class="alerts" aria-live="polite">
-          {% for category, message in messages %}
-            <article class="alert alert-{{ category }}">{{ message }}</article>
-          {% endfor %}
-        </section>
-      {% endif %}
-    {% endwith %}
-
-    {% if latest_tracking_id %}
-      <section class="tracking-success">
-        <p>Tracking ID Successfully Generated</p>
-        <strong>{{ latest_tracking_id }}</strong>
-      </section>
-    {% endif %}
-
-    <section class="cards-grid">
-      <article class="platform-card report-card">
-        <h2>Passenger Report Form</h2>
-        <p>Submit name, item details, and description in a secure intake flow.</p>
-        <button id="openReportModal" class="primary-btn" type="button">Report Lost Item</button>
-      </article>
-
-      <article class="platform-card verify-card">
-        <h2>Claim Verification</h2>
-        <p>Paste your Tracking ID and instantly verify your case status.</p>
-        <form method="post" action="{{ url_for('home') }}" class="verify-form">
-          <input type="hidden" name="action" value="track" />
-          <input type="text" name="tracking_id" placeholder="LF-YYMMDD-XXXXXX" required />
-          <button class="primary-btn" type="submit">Search</button>
-        </form>
-
-        {% if search_result %}
-          {% set step = pipeline_step(search_result) %}
-          <div class="search-result">
-            <p><strong>ID:</strong> {{ search_result.tracking_id }}</p>
-            <p><strong>Passenger:</strong> {{ search_result.passenger_name }}</p>
-            <p><strong>Item:</strong> {{ search_result.item_name }}</p>
-            <div class="status-line">
-              <span class="chip {% if search_result.found_status %}ok{% else %}hold{% endif %}">
-                {% if search_result.found_status %}Found{% else %}Not Found{% endif %}
-              </span>
-              <span class="chip {% if search_result.claim_status %}ok{% else %}wait{% endif %}">
-                {% if search_result.claim_status %}Claimed{% else %}Unclaimed{% endif %}
-              </span>
-            </div>
-            <ol class="pipeline">
-              <li class="{% if step >= 1 %}done{% endif %}">Reported</li>
-              <li class="{% if step >= 2 %}done{% endif %}">Found</li>
-              <li class="{% if step >= 3 %}done{% endif %}">Claimed</li>
-            </ol>
-          </div>
-        {% endif %}
-      </article>
-
-      <article class="platform-card dashboard-card">
-        <h2>Tracking Dashboard</h2>
-        <p>Operational snapshot for current Lost &amp; Found workflow.</p>
-        <div class="stats">
-          <div><small>Total Reports</small><strong>{{ metrics.total }}</strong></div>
-          <div><small>Found</small><strong>{{ metrics.found }}</strong></div>
-          <div><small>Open Cases</small><strong>{{ metrics.open_cases }}</strong></div>
-          <div><small>Claimed</small><strong>{{ metrics.claimed }}</strong></div>
-        </div>
-        <ul class="recent-list">
-          {% for row in recent_reports[:4] %}
-            <li>
-              <span>{{ row.tracking_id }}</span>
-              <span>{{ row.item_name }}</span>
-            </li>
-          {% else %}
-            <li><span>No reports yet.</span></li>
-          {% endfor %}
-        </ul>
-      </article>
-
-      <article class="platform-card workflow-card">
-        <h2>Staff Workflow</h2>
-        <p>Password-protected operations area for item processing and claim closure.</p>
-        <ul>
-          <li>View all reports in one admin dashboard.</li>
-          <li>Update Found and Claimed statuses.</li>
-          <li>Track each case from report to completion.</li>
-        </ul>
-        <a class="primary-btn link-btn" href="{{ url_for('admin_login') }}">Open Admin Panel</a>
-      </article>
-    </section>
-  </main>
-
-  <div id="reportModal" class="modal" aria-hidden="true">
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
-      <div class="modal-head">
-        <h3 id="reportTitle">Passenger Report Form</h3>
-        <button id="closeReportModal" class="icon-btn" type="button" aria-label="Close">&times;</button>
-      </div>
-      <p>Provide accurate details to generate your official tracking ID.</p>
-      <form method="post" action="{{ url_for('home') }}" class="report-form">
-        <input type="hidden" name="action" value="report" />
-        <label>
-          Full Name
-          <input type="text" name="passenger_name" required />
-        </label>
-        <label>
-          Item Name
-          <input type="text" name="item_name" required />
-        </label>
-        <label>
-          Description
-          <textarea name="description" rows="4" required></textarea>
-        </label>
-        <button class="primary-btn" type="submit">Generate Tracking ID</button>
-      </form>
+<div class="container">
+    <div class="header">
+        <h1>نظام المفقودات والمقتنيات</h1>
+        <p>منصة إدارة العمليات والطلبات الذكية</p>
     </div>
-  </div>
 
-  <script src="{{ url_for('static', filename='lost_found.js') }}"></script>
+    <div class="grid-container">
+        <a href="/report" class="card">
+            <i class="fas fa-file-medical"></i>
+            <h3>إبلاغ عن مفقود</h3>
+            <p>سجل بياناتك ووصف الغرض المفقود للحصول على رقم تتبع (ID) فوراً.</p>
+        </a>
+
+        <a href="/search" class="card">
+            <i class="fas fa-search-location"></i>
+            <h3>تتبع حالة غرض</h3>
+            <p>أدخل رقم الـ ID الخاص بك لمعرفة حالة الغرض (موجود/غير موجود) وحالة التسليم.</p>
+        </a>
+
+        <a href="/login" class="card">
+            <i class="fas fa-user-shield"></i>
+            <h3>بوابة الموظفين</h3>
+            <p>لوحة التحكم لتحديث حالات المفقودات وإدارة عمليات التسليم (محمية برمز سري).</p>
+        </a>
+    </div>
+
+    <div class="footer">
+        © 2026 نظام عمليات المطار الذكي - جميع الحقوق محفوظة
+    </div>
+</div>
+
 </body>
 </html>
